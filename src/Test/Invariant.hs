@@ -39,3 +39,15 @@ distributesRightOver f g x y z = (y `g` z) `f` x == (x `f` y) `g` (x `f` z)
 distributesOver :: Eq a => (a -> a -> a) -> (a -> a -> a) -> a -> a -> a -> Bool
 distributesOver f g x y z = (f `distributesLeftOver` g) x y z
                             && (f `distributesRightOver` g) x y z
+
+inflation :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
+inflation f xs = length (f xs) > length xs
+
+deflation :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
+deflation f xs = null xs || length (f xs) < length xs
+
+cyclesWithin :: Eq a => (a -> a) -> Int -> a -> Bool
+cyclesWithin f n x = go [] . take (n + 1) $ iterate f x
+             where go xs (y:ys) | y `elem` xs = True
+                                | otherwise   = go (y:xs) ys
+                   go _ _ = False
