@@ -26,6 +26,9 @@ monotonicDecreasing' f x = f x > f (succ x)
 involutory :: Eq a => (a -> a) -> a -> Bool
 involutory f x = f (f x) == x
 
+inverts :: Eq a => (b -> a) -> (a -> b) -> a -> Bool
+inverts f g x = f (g x) == x
+
 commutative :: Eq b => (a -> a -> b) -> a -> a -> Bool
 commutative f x y = x `f` y == y `f` x
 
