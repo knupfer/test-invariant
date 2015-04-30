@@ -1,34 +1,36 @@
 module Test.Invariant where
 
-idempotence :: Eq a => (a -> a) -> a -> Bool
-idempotence f x = f x == f (f x)
+idempotent :: Eq a => (a -> a) -> a -> Bool
+idempotent f x = f x == f (f x)
 
-pointSymmetry :: (Num a, Num b, Eq b) => (a -> b) -> a -> Bool
-pointSymmetry f x = f (-x) == - f x
+pointSymmetric :: (Num a, Num b, Eq b) => (a -> b) -> a -> Bool
+pointSymmetric f x = f (-x) == - f x
 
-reflectionSymmetry :: (Num a, Eq b) => (a -> b) -> a -> Bool
-reflectionSymmetry f x = f (-x) == f x
+reflectionSymmetric :: (Num a, Eq b) => (a -> b) -> a -> Bool
+reflectionSymmetric f x = f (-x) == f x
 
-monotonicIncrease :: (Enum a, Ord b) => (a -> b) -> a -> Bool
-monotonicIncrease f x = f x <= f (succ x)
+monotonicIncreasing :: (Enum a, Ord b) => (a -> b) -> a -> Bool
+monotonicIncreasing f x = f x <= f (succ x)
 
-monotonicIncrease' :: (Enum a, Ord b) => (a -> b) -> a -> Bool
-monotonicIncrease' f x = f x < f (succ x)
+-- TODO create sorted list and fold with predicate over it
 
-monotonicDecrease :: (Enum a, Ord b) => (a -> b) -> a -> Bool
-monotonicDecrease f x = f x >= f (succ x)
+monotonicIncreasing' :: (Enum a, Ord b) => (a -> b) -> a -> Bool
+monotonicIncreasing' f x = f x < f (succ x)
 
-monotonicDecrease' :: (Enum a, Ord b) => (a -> b) -> a -> Bool
-monotonicDecrease' f x = f x > f (succ x)
+monotonicDecreasing :: (Enum a, Ord b) => (a -> b) -> a -> Bool
+monotonicDecreasing f x = f x >= f (succ x)
 
-inversion :: Eq a => (a -> a) -> a -> Bool
-inversion f x = f (f x) == x
+monotonicDecreasing' :: (Enum a, Ord b) => (a -> b) -> a -> Bool
+monotonicDecreasing' f x = f x > f (succ x)
 
-commutativity :: Eq b => (a -> a -> b) -> a -> a -> Bool
-commutativity f x y = x `f` y == y `f` x
+inversive :: Eq a => (a -> a) -> a -> Bool
+inversive f x = f (f x) == x
 
-associativity :: Eq a => (a -> a -> a) -> a -> a -> a -> Bool
-associativity f x y z = x `f` (y `f` z) == (x `f` y) `f` z
+commutative :: Eq b => (a -> a -> b) -> a -> a -> Bool
+commutative f x y = x `f` y == y `f` x
+
+associative :: Eq a => (a -> a -> a) -> a -> a -> a -> Bool
+associative f x y z = x `f` (y `f` z) == (x `f` y) `f` z
 
 distributesLeftOver :: Eq a => (a -> a -> a) -> (a -> a -> a) -> a -> a -> a -> Bool
 distributesLeftOver f g x y z = x `f` (y `g` z) == (x `f` y) `g` (x `f` z)
@@ -40,11 +42,11 @@ distributesOver :: Eq a => (a -> a -> a) -> (a -> a -> a) -> a -> a -> a -> Bool
 distributesOver f g x y z = (f `distributesLeftOver` g) x y z
                             && (f `distributesRightOver` g) x y z
 
-inflation :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
-inflation f xs = length (f xs) > length xs
+inflates :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
+inflates f xs = length (f xs) > length xs
 
-deflation :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
-deflation f xs = null xs || length (f xs) < length xs
+deflates :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
+deflates f xs = null xs || length (f xs) < length xs
 
 cyclesWithin :: Eq a => (a -> a) -> Int -> a -> Bool
 cyclesWithin f n x = go [] . take (n + 1) $ iterate f x
