@@ -1,5 +1,9 @@
 module Test.Invariant where
 
+infix 0 ===
+(===) :: Eq b => (a -> b) -> (a -> b) -> a -> Bool
+(f === g) x = f x == g x
+
 idempotent :: Eq a => (a -> a) -> a -> Bool
 idempotent f x = f x == f (f x)
 
