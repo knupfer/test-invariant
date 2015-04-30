@@ -9,19 +9,19 @@ pointSymmetric f x = f (-x) == - f x
 reflectionSymmetric :: (Num a, Eq b) => (a -> b) -> a -> Bool
 reflectionSymmetric f x = f (-x) == f x
 
-monotonicIncreasing :: (Enum a, Ord b) => (a -> b) -> a -> Bool
-monotonicIncreasing f x = f x <= f (succ x)
+monotonicIncreasing :: (Ord a, Ord b) => (a -> b) -> a -> a -> Bool
+monotonicIncreasing f x y  = not $ monotonicDecreasing' f x y
+
+monotonicIncreasing' :: (Ord a, Ord b) => (a -> b) -> a -> a -> Bool
+monotonicIncreasing' f x y = compare (f x) (f y) == compare x y
+
+monotonicDecreasing :: (Ord a, Ord b) => (a -> b) -> a -> a -> Bool
+monotonicDecreasing f x y  = not $ monotonicIncreasing' f x y
+
+monotonicDecreasing' :: (Ord a, Ord b) => (a -> b) -> a -> a -> Bool
+monotonicDecreasing' f x y = compare (f x) (f y) == compare y x
 
 -- TODO create sorted list and fold with predicate over it
-
-monotonicIncreasing' :: (Enum a, Ord b) => (a -> b) -> a -> Bool
-monotonicIncreasing' f x = f x < f (succ x)
-
-monotonicDecreasing :: (Enum a, Ord b) => (a -> b) -> a -> Bool
-monotonicDecreasing f x = f x >= f (succ x)
-
-monotonicDecreasing' :: (Enum a, Ord b) => (a -> b) -> a -> Bool
-monotonicDecreasing' f x = f x > f (succ x)
 
 involutory :: Eq a => (a -> a) -> a -> Bool
 involutory f x = f (f x) == x
