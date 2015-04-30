@@ -5,13 +5,13 @@ infix 0 ===
 (f === g) x = f x == g x
 
 idempotent :: Eq a => (a -> a) -> a -> Bool
-idempotent f x = f x == f (f x)
+idempotent f = f === f . f
 
 pointSymmetric :: (Num a, Num b, Eq b) => (a -> b) -> a -> Bool
-pointSymmetric f x = f (-x) == - f x
+pointSymmetric f = f . negate === negate . f
 
 reflectionSymmetric :: (Num a, Eq b) => (a -> b) -> a -> Bool
-reflectionSymmetric f x = f (-x) == f x
+reflectionSymmetric f = f . negate === f
 
 monotonicIncreasing :: (Ord a, Ord b) => (a -> b) -> a -> a -> Bool
 monotonicIncreasing f x y  = not $ monotonicDecreasing' f x y
@@ -28,10 +28,10 @@ monotonicDecreasing' f x y = compare (f x) (f y) == compare y x
 -- TODO create sorted list and fold with predicate over it
 
 involutory :: Eq a => (a -> a) -> a -> Bool
-involutory f x = f (f x) == x
+involutory f = f . f === id
 
 inverts :: Eq a => (b -> a) -> (a -> b) -> a -> Bool
-(f `inverts` g) x = f (g x) == x
+f `inverts` g = f . g === id
 
 commutative :: Eq b => (a -> a -> b) -> a -> a -> Bool
 commutative f x y = x `f` y == y `f` x
@@ -56,7 +56,7 @@ deflating :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
 deflating f xs = null xs || length (f xs) < length xs
 
 cyclesWithin :: Eq a => (a -> a) -> Int -> a -> Bool
-(f `cyclesWithin` n) x = go [] . take (n + 1) $ iterate f x
+f `cyclesWithin` n = go [] . take (n + 1) . iterate f
              where go xs (y:ys) | y `elem` xs = True
                                 | otherwise   = go (y:xs) ys
                    go _ _ = False
