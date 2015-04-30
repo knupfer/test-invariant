@@ -45,11 +45,11 @@ distributesOver :: Eq a => (a -> a -> a) -> (a -> a -> a) -> a -> a -> a -> Bool
 distributesOver f g x y z = (f `distributesLeftOver` g) x y z
                             && (f `distributesRightOver` g) x y z
 
-inflates :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
-inflates f xs = length (f xs) > length xs
+inflating :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
+inflating f xs = length (f xs) > length xs
 
-deflates :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
-deflates f xs = null xs || length (f xs) < length xs
+deflating :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
+deflating f xs = null xs || length (f xs) < length xs
 
 cyclesWithin :: Eq a => (a -> a) -> Int -> a -> Bool
 cyclesWithin f n x = go [] . take (n + 1) $ iterate f x
