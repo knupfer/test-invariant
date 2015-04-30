@@ -23,8 +23,8 @@ monotonicDecreasing f x = f x >= f (succ x)
 monotonicDecreasing' :: (Enum a, Ord b) => (a -> b) -> a -> Bool
 monotonicDecreasing' f x = f x > f (succ x)
 
-inversive :: Eq a => (a -> a) -> a -> Bool
-inversive f x = f (f x) == x
+involutory :: Eq a => (a -> a) -> a -> Bool
+involutory f x = f (f x) == x
 
 commutative :: Eq b => (a -> a -> b) -> a -> a -> Bool
 commutative f x y = x `f` y == y `f` x
