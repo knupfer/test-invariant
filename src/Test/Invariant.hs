@@ -53,3 +53,12 @@ cyclesWithin f n x = go [] . take (n + 1) $ iterate f x
              where go xs (y:ys) | y `elem` xs = True
                                 | otherwise   = go (y:xs) ys
                    go _ _ = False
+
+scalingInvariant :: (Num a, Eq b) => (a -> a -> b) -> a -> a -> a -> Bool
+scalingInvariant f = f `invariatesOver` (*)
+
+translationInvariant :: (Num a, Eq b) => (a -> a -> b) -> a -> a -> a -> Bool
+translationInvariant f = f `invariatesOver` (+)
+
+invariatesOver :: Eq b => (a -> a -> b) -> (a -> c -> a) -> a -> a -> c -> Bool
+invariatesOver f g x y z = x `f` y == (x `g` z) `f` (y `g` z)
