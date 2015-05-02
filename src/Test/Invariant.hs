@@ -52,7 +52,7 @@ reflectionSymmetric f = f . negate <=> f
 -- >>> quickCheck $ monotonicIncreasing ceiling
 -- +++ OK, passed 100 tests.
 monotonicIncreasing :: (Ord a, Ord b) => (a -> b) -> a -> a -> Bool
-monotonicIncreasing f x y  = not $ monotonicDecreasing' f x y
+monotonicIncreasing f x y  = compare (f x) (f y) `elem` [EQ, compare x y]
 
 -- | Checks whether a function is strictly monotonicIncreasing'.
 --
@@ -70,7 +70,7 @@ monotonicIncreasing' f x y = compare (f x) (f y) == compare x y
 -- >>> quickCheck $ monotonicDecreasing floor
 -- +++ OK, passed 100 tests.
 monotonicDecreasing :: (Ord a, Ord b) => (a -> b) -> a -> a -> Bool
-monotonicDecreasing f x y  = not $ monotonicIncreasing' f x y
+monotonicDecreasing f x y  = compare (f x) (f y) `elem` [EQ, compare y x]
 
 -- | Checks whether a function is strictly monotonicDecreasing'.
 --
