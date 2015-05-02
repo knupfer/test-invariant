@@ -67,7 +67,7 @@ monotonicIncreasing' f x y = compare (f x) (f y) == compare x y
 --
 -- > x >= y,  f(x) <= f(y)
 --
--- >>> quickCheck $ monotonicDecreasing floor
+-- >>> quickCheck $ monotonicDecreasing (\x -> floor $ negate x)
 -- +++ OK, passed 100 tests.
 monotonicDecreasing :: (Ord a, Ord b) => (a -> b) -> a -> a -> Bool
 monotonicDecreasing f x y  = compare (f x) (f y) `elem` [EQ, compare y x]
