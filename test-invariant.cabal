@@ -15,7 +15,7 @@ license-file:        LICENSE
 author:              Florian Knupfer <fknupfer@gmail.com>
 maintainer:          Florian Knupfer <fknupfer@gmail.com>
 copyright:           2015 Florian Knupfer
-tested-with:         GHC >= 7.8
+tested-with:         GHC >= 7.10
 category:            Testing
 build-type:          Simple
 homepage:            https://github.com/knupfer/test-invariant
