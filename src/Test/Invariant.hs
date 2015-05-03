@@ -1,6 +1,7 @@
 module Test.Invariant where
 
 import Test.QuickCheck
+
 infix 1 <=>, &>
 
 -- | Defines extensional equality.  This allows concise, point-free,
@@ -151,16 +152,22 @@ distributesOver :: Eq a => (a -> a -> a) -> (a -> a -> a) -> a -> a -> a -> Bool
 --
 -- >>> quickCheck $ inflating (1:)
 -- +++ OK, passed 100 tests.
-inflating :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
+inflating :: ([a] -> [b]) -> [a] -> Bool
 inflating f xs = length (f xs) > length xs
+-- For GHC 7.10
+-- inflating :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
+-- inflating f xs = length (f xs) > length xs
 
 -- | Checks whether a function decreases the size of a foldable.
 --
 --
 -- >>> quickCheck $ deflating tail
 -- +++ OK, passed 100 tests.
-deflating :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
+deflating :: ([a] -> [b]) -> [a] -> Bool
 deflating f xs = null xs || length (f xs) < length xs
+-- For GHC 7.10
+-- deflating :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
+-- deflating f xs = null xs || length (f xs) < length xs
 
 -- | Checks whether a function is cyclic by applying its result to
 -- itself within n applications.
