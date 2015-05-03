@@ -3,6 +3,7 @@ module Test.Invariant where
 import Test.QuickCheck
 
 infix 1 <=>, &>
+infix 2 <~~, @~>
 
 -- | Defines extensional equality.  This allows concise, point-free,
 -- definitions of laws.  For example idempotence:
@@ -186,3 +187,19 @@ f `cyclesWithin` n = go [] . take (n + 1) . iterate f
 -- +++ OK, passed 100 tests.
 invariatesOver :: Eq b => (a -> b) -> (a -> a) -> a -> Bool
 f `invariatesOver` g = f . g <=> f
+
+-- | Checks whether a function is invariant over an other function.
+--
+-- >>> quickCheck $ length <~~ reverse
+-- +++ OK, passed 100 tests.
+(<~~) :: Eq b => (a -> b) -> (a -> a) -> a -> Bool
+f <~~ g = f . g <=> f
+
+-- | Checks whether a function is the inverse of another function.
+--
+-- > f(g(x)) = x
+--
+-- >>> quickCheck $ (`div` 2) @~> (*2)
+-- +++ OK, passed 100 tests.
+(@~>) :: Eq a => (b -> a) -> (a -> b) -> a -> Bool
+f @~> g = f . g <=> id
