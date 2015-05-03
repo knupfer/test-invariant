@@ -1,5 +1,5 @@
 name:                test-invariant
-version:             0.3.1.2
+version:             0.4.0.0
 synopsis:            Provide common invariants to be checked with QuickCheck
 
 description: test-invariant is a library for providing common invariants of
