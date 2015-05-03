@@ -149,23 +149,40 @@ distributesOver :: Eq a => (a -> a -> a) -> (a -> a -> a) -> a -> a -> a -> Bool
 (f `distributesOver` g) x y z = (f `distributesLeftOver` g) x y z
                             && (f `distributesRightOver` g) x y z
 
--- | Checks whether a function increases the size of a foldable.
+-- | Checks whether a function increases the size of a list.
 --
 -- >>> quickCheck $ inflating (1:)
 -- +++ OK, passed 100 tests.
 inflating :: ([a] -> [b]) -> [a] -> Bool
-inflating f xs = length (f xs) > length xs
+inflating f xs = length (f xs) >= length xs
+
+-- | Checks whether a function increases strictly the size of a list.
+--
+-- >>> quickCheck $ inflating (1:)
+-- +++ OK, passed 100 tests.
+inflating' :: ([a] -> [b]) -> [a] -> Bool
+inflating' f xs = length (f xs) > length xs
+
 -- For GHC 7.10
 -- inflating :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
 -- inflating f xs = length (f xs) > length xs
 
--- | Checks whether a function decreases the size of a foldable.
+-- | Checks whether a function decreases the size of a list.
 --
 --
 -- >>> quickCheck $ deflating tail
 -- +++ OK, passed 100 tests.
 deflating :: ([a] -> [b]) -> [a] -> Bool
-deflating f xs = null xs || length (f xs) < length xs
+deflating f xs = length (f xs) <= length xs
+
+-- | Checks whether a function decreases strictly the size of a list.
+--
+--
+-- >>> quickCheck $ deflating tail
+-- +++ OK, passed 100 tests.
+deflating' :: ([a] -> [b]) -> [a] -> Bool
+deflating' f xs = null xs || length (f xs) < length xs
+
 -- For GHC 7.10
 -- deflating :: (Foldable f, Foldable f') => (f a -> f' b) -> f a -> Bool
 -- deflating f xs = null xs || length (f xs) < length xs
