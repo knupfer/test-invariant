@@ -3,7 +3,7 @@ module Test.Invariant where
 import Test.QuickCheck
 
 infix 1 <=>, &>
-infix 2 <~~, @~>
+infix 2 <~~, @~>, <?>
 
 -- | Defines extensional equality.  This allows concise, point-free,
 -- definitions of laws.  For example idempotence:
@@ -220,3 +220,12 @@ f <~~ g = f . g <=> f
 -- +++ OK, passed 100 tests.
 (@~>) :: Eq a => (b -> a) -> (a -> b) -> a -> Bool
 f @~> g = f . g <=> id
+
+-- | Checks whether two functions commutate.
+--
+-- > f(g(x)) = g(f(x))
+--
+-- >>> quickCheck $ (*7) <?> abs
+-- +++ OK, passed 100 tests.
+(<?>) :: Eq a => (a -> a) -> (a -> a) -> a -> Bool
+f <?> g = f . g <=> g . f
