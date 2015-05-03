@@ -20,7 +20,7 @@ category:            Testing
 build-type:          Simple
 homepage:            https://github.com/knupfer/test-invariant
 -- extra-source-files:
-cabal-version:       >= 1.8
+cabal-version:       >= 1.10
 
 source-repository head
   type:     git
@@ -30,14 +30,14 @@ library
   exposed-modules:   Test.Invariant
   -- other-modules:
   -- other-extensions:
-  build-depends:     base
+  build-depends:     base == 4.*
                    , QuickCheck
   hs-source-dirs:    src
   default-language:  Haskell2010
 
 test-suite Tasty
   type:              exitcode-stdio-1.0
-  build-depends:     base
+  build-depends:     base == 4.*
                    , test-invariant
                    , QuickCheck
                    , tasty
@@ -47,7 +47,7 @@ test-suite Tasty
   default-language:  Haskell2010
 
 benchmark Criterion
-  build-depends:     base
+  build-depends:     base == 4.*
                    , test-invariant
                    , criterion
                    , QuickCheck
