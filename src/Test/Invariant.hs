@@ -2,12 +2,13 @@ module Test.Invariant where
 
 import Test.QuickCheck
 
-infix 1 <=>, &>
-infix 2 <~~, @~>, <?>
+infix 1 &>
+infix 2 <~~, @~>, <?>, <=>
 
 -- | Defines extensional equality.  This allows concise, point-free,
--- definitions of laws.  For example idempotence:
+-- definitions of laws.
 --
+-- > f(x) == g(x)
 -- > f <=> f . f
 (<=>) :: Eq b => (a -> b) -> (a -> b) -> a -> Bool
 (f <=> g) x = f x == g x
