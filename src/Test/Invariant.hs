@@ -222,7 +222,7 @@ f <~~ g = f . g <=> f
 (@~>) :: Eq a => (b -> a) -> (a -> b) -> a -> Bool
 f @~> g = f . g <=> id
 
--- | Checks whether two functions commutate.
+-- | Checks whether a function is an endomorphism in relation to a unary operator.
 --
 -- > f(g(x)) = g(f(x))
 --
@@ -230,3 +230,13 @@ f @~> g = f . g <=> id
 -- +++ OK, passed 100 tests.
 (<?>) :: Eq a => (a -> a) -> (a -> a) -> a -> Bool
 f <?> g = f . g <=> g . f
+
+-- | Checks whether a function is an endomorphism in relation to a binary operator.
+--
+(<??>) :: Eq a => (a -> a) -> (a -> a -> a) -> a -> a -> Bool
+(f <??> g) x y = f (x `g` y) == f x `g` f y
+
+-- | Checks whether a function is an endomorphism in relation to a ternary operator.
+--
+(<???>) :: Eq a => (a -> a) -> (a -> a -> a -> a) -> a -> a -> a -> Bool
+(f <???> g) x y z = f (g x y z) == g (f x) (f y) (f z)
