@@ -240,5 +240,7 @@ f <?> g = f . g <=> g . f
 
 -- | Checks whether a function is an endomorphism in relation to a ternary operator.
 --
+-- > f(g(x,y,z)) = g(f(x),f(y),f(z))
+--
 (<???>) :: Eq a => (a -> a) -> (a -> a -> a -> a) -> a -> a -> a -> Bool
 (f <???> g) x y z = f (g x y z) == g (f x) (f y) (f z)
