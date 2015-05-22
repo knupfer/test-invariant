@@ -242,6 +242,8 @@ f <?> g = f . g <=> g . f
 
 -- | Checks whether a function is an endomorphism in relation to a binary operator.
 --
+-- > f(g(x,y)) = g(f(x),f(y))
+--
 -- >>> quickCheck $ (^2) <??> (*)
 -- +++ OK, passed 100 tests.
 (<??>) :: Eq a => (a -> a) -> (a -> a -> a) -> a -> a -> Bool
