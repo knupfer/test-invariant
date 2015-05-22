@@ -206,6 +206,15 @@ f `cyclesWithin` n = go [] . take (n + 1) . iterate f
 invariatesOver :: Eq b => (a -> b) -> (a -> a) -> a -> Bool
 f `invariatesOver` g = f . g <=> f
 
+-- | Checks whether a binary function is fixed by an argument.
+--
+-- f x y == const a y
+--
+-- >>> quickCheck $ (*) `fixedBy` 0
+-- +++ OK, passed 100 tests.
+fixedBy :: Eq c => (a -> b -> c) -> a -> b -> b -> Bool
+(f `fixedBy` x) y z = f x y == f x z
+
 -- | Checks whether a function is invariant over an other function.
 --
 -- >>> quickCheck $ length <~~ reverse
