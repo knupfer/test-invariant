@@ -9,7 +9,7 @@ infix 2 <~~, @~>, <?>, <=>
 -- definitions of laws.
 --
 -- > f(x) == g(x)
--- > f <=> f . f
+-- > f <=> g
 (<=>) :: Eq b => (a -> b) -> (a -> b) -> a -> Bool
 (f <=> g) x = f x == g x
 
